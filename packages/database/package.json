@@ -1,0 +1,24 @@
+{
+  "name": "@dormitory/database",
+  "version": "1.0.0",
+  "scripts": {
+    "knex:dormitory": "knex --knexfile knexfile.dormitory.ts",
+    "migrate:make": "pnpm knex:dormitory migrate:make",
+    "migrate:latest": "pnpm knex:dormitory migrate:latest",
+    "migrate:down": "pnpm knex:dormitory migrate:down",
+    "migrate:rollback": "knex migrate:rollback --knexfile knexfile.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0",
+  "dependencies": {
+    "knex": "^3.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.17.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

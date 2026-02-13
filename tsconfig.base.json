@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@dormitory/shared/*": ["packages/shared/src/*"],
+      "@dormitory/database/*": ["packages/database/*"],
+      "@dormitory/dal/*": ["packages/dal/src/*"]
+    }
+  }
+}

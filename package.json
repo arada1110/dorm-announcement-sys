@@ -1,0 +1,25 @@
+{
+  "name": "dormitory-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "migrate": "pnpm --filter @dormitory/database migrate",
+    "migrate:rollback": "pnpm --filter @dormitory/database migrate:rollback"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0",
+  "devDependencies": {
+    "turbo": "^2.8.7",
+    "typescript": "^5.9.3"
+  },
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

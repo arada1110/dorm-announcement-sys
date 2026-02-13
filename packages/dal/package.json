@@ -1,0 +1,14 @@
+{
+  "name": "@dormitory/dal",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0",
+  "dependencies": {
+    "knex": "^3.1.0"
+  }
+}
