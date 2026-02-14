@@ -1,14 +1,23 @@
 {
   "name": "@dormitory/dal",
   "version": "1.0.0",
+  "private": "true",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "knex:dormitory": "knex --knexfile knexfile.dormitory.ts",
+    "migrate:make": "pnpm knex:dormitory migrate:make",
+    "migrate:latest": "pnpm knex:dormitory migrate:latest",
+    "migrate:down": "pnpm knex:dormitory migrate:down"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "packageManager": "pnpm@10.10.0",
   "dependencies": {
-    "knex": "^3.1.0"
+    "dotenv": "^17.3.1",
+    "knex": "^3.1.0",
+    "mysql2": "^3.17.1"
+  },
+  "devDependencies": {
+    "@types/knex": "^0.16.1",
+    "@types/node": "^25.2.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }
