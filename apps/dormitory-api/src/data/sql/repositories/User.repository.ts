@@ -1,6 +1,7 @@
 import { IUser, IUserWithRole } from "src/data/abstactions/entities/IUser";
 import { IUserRepository } from "src/data/abstactions/repositories/IUser.repository";
 import { db } from "src/database/Connection";
+import { v4 as uuidv4 } from "uuid";
 
 export class UserRepository implements IUserRepository {
     protected tableName: string = "users";
@@ -10,18 +11,19 @@ export class UserRepository implements IUserRepository {
     }
 
     async createUser(user: Partial<IUser>): Promise<IUser> {
-        const [id] = await db(this.tableName).insert(user);
-        return db(this.tableName).first();
+        const id = uuidv4();
+        await db(this.tableName).insert({ id, ...user });
+        return db(this.tableName).where({ id }).first();
     }
 
     async findUserByEmail(email: string): Promise<IUser> {
-        return db(this.tableName).where(email).first();
+        return db(this.tableName).where({ email }).first();
     }
 
     async findUserByEmailWithRole(email: string): Promise<IUserWithRole> {
         return await db(this.tableName)
             .join("roles", "users.role_id", "roles.id")
-            .select("users.*", "roles.name as role_name")
+            .select("users.*", "roles.role_name as role_name")
             .where("users.email", email)
             .first();
     }
@@ -36,5 +38,9 @@ export class UserRepository implements IUserRepository {
 
     async deleteUser(id: string): Promise<void> {
         await db(this.tableName).where(id).delete();
+    }
+
+    async updateRole(userId: string, roleId: number) {
+        return;
     }
 }

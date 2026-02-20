@@ -1,3 +1,6 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import { Knex, knex } from "knex";
 
 export const db: Knex = knex({

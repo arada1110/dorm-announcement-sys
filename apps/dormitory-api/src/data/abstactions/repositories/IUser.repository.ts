@@ -8,4 +8,5 @@ export interface IUserRepository {
     findUserById(id: string): Promise<IUser>;
     updateStatus(id: string, status: string): Promise<void>;
     deleteUser(id: string): Promise<void>;
+    updateRole(userId: string, roleId: number);
 }

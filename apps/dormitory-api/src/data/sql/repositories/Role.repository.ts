@@ -10,7 +10,7 @@ export class RoleRepository implements IRoleRepository {
     }
 
     async findByName(name: string): Promise<{ id: number; name: string }> {
-        return db(this.tablaName).where(name).first();
+        return db(this.tablaName).where({ role_name: name }).first();
     }
 
     async createRole(entity: Partial<IRole>): Promise<IRole> {
