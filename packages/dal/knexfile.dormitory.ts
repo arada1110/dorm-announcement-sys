@@ -18,6 +18,7 @@ const config: Knex.Config = {
         acquireTimeoutMillis: parseInt(process.env.DATABASE__TIMEOUT || "180000"),
     },
     migrations: { directory: "./migrations/" },
+    seeds: { directory: "./seeds/" },
 };
 
 export default config;
