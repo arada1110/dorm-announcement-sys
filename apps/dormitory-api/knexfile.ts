@@ -1,9 +1,8 @@
 import * as DotEnv from "dotenv";
-import type { Knex } from "knex";
 
 DotEnv.config();
 
-const config: Knex.Config = {
+const config = {
     client: process.env.DATABASE__DRIVER,
     connection: {
         host: process.env.DATABASE__HOST,
@@ -18,7 +17,6 @@ const config: Knex.Config = {
         acquireTimeoutMillis: parseInt(process.env.DATABASE__TIMEOUT || "180000"),
     },
     migrations: { directory: "./migrations/" },
-    seeds: { directory: "./seeds/" },
 };
 
 export default config;

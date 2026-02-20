@@ -6,13 +6,16 @@
     "knex:dormitory": "knex --knexfile knexfile.dormitory.ts",
     "migrate:make": "pnpm knex:dormitory migrate:make",
     "migrate:latest": "pnpm knex:dormitory migrate:latest",
-    "migrate:down": "pnpm knex:dormitory migrate:down"
+    "migrate:down": "pnpm knex:dormitory migrate:down",
+    "seed:make": "pnpm knex:dormitory seed:make",
+    "seed": "pnpm knex:dormitory seed:run"
   },
   "packageManager": "pnpm@10.10.0",
   "dependencies": {
     "dotenv": "^17.3.1",
     "knex": "^3.1.0",
-    "mysql2": "^3.17.1"
+    "mysql2": "^3.17.1",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/knex": "^0.16.1",
