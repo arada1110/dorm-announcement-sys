@@ -5,10 +5,12 @@ import { AuthController } from "./authorization.controller";
 import { PassportModule } from "@nestjs/passport";
 import { JwtStrategy } from "./stategies/jwt.strategy";
 import { ConfigService } from "@nestjs/config";
+import { InviteCodeModule } from "../invite/invite.module";
 
 @Module({
     imports: [
         PassportModule,
+        InviteCodeModule,
         JwtModule.registerAsync({
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => ({

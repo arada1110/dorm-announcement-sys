@@ -6,28 +6,39 @@ import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UserService {
-    private userRepo = new UserRepository();
-    private roleRepo = new RoleRepository();
+    constructor(
+        private userRepo: UserRepository,
+        private roleRepo: RoleRepository,
+    ) {}
 
     async createUserByAdmin(dto: CreateUserDto) {
-        const role = await this.roleRepo.findByName(dto.role);
+        const { email, username, first_name, last_name, password } = dto;
 
-        if (!role) {
-            throw new BadRequestException("Role not found");
+        const existingUser = await this.userRepo.findUserByEmail(email);
+        if (existingUser) {
+            throw new BadRequestException("Email already exists");
         }
 
-        const password_hash = await bcrypt.hash(dto.password, 10);
+        const role = await this.roleRepo.findByName("RESIDENT");
+        if (!role) {
+            throw new Error("RESIDENT role not found");
+        }
 
-        return this.userRepo.createUser({
-            username: dto.username,
-            first_name: dto.first_name,
-            last_name: dto.last_name,
-            email: dto.email,
+        const password_hash = await bcrypt.hash(password, 10);
+
+        const createdUser = await this.userRepo.createUser({
+            username,
+            email,
+            first_name,
+            last_name,
             password_hash,
             role_id: role.id,
             status: "ACTIVE",
             created_at: new Date(),
         });
+
+        const { password_hash: _, ...safeUser } = createdUser;
+        return safeUser;
     }
 
     async listUsers() {
