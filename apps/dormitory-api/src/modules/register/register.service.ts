@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { RegisterDto } from "./dto/register.dto";
 import { InviteService } from "../invite/invite.service";
-import { UserService } from "../user/user.service";
 import { UserRepository } from "src/data/sql/repositories/User.repository";
 import { RoleRepository } from "src/data/sql/repositories/Role.repository";
 import * as bcrypt from "bcrypt";
@@ -11,13 +10,10 @@ export class RegisterationService {
     private userRepo = new UserRepository();
     private roleRepo = new RoleRepository();
 
-    constructor(
-        private readonly inviteService: InviteService,
-        private readonly userService: UserService,
-    ) {}
+    constructor(private readonly inviteService: InviteService) {}
 
     async register(dto: RegisterDto) {
-        const { email, username, first_name, last_name, password, inviteCode } = dto;
+        const { username, first_name, last_name, email, password, inviteCode } = dto;
 
         const existingUser = await this.userRepo.findUserByEmail(email);
         if (existingUser) {
@@ -44,30 +40,10 @@ export class RegisterationService {
             created_at: new Date(),
         });
 
-        await this.inviteService.markInviteAsUsed(invite.invite_id);
+        await this.inviteService.markInviteAsUsed(invite.id);
 
         const { password_hash: _, ...safeUser } = createdUser;
 
         return safeUser;
     }
 }
-
-/*
-@Injectable()
-export class RegistrationService {
-    constructor(
-        private readonly inviteService: InviteService,
-        private readonly userService: UserService,
-    ) {}
-
-    async register(dto: RegisterDto) {
-        const invite = await this.inviteService.validateInvite(dto.inviteCode);
-
-        const user = await this.userService.createResident(dto);
-
-        await this.inviteService.markInviteAsUsed(invite.invite_id);
-
-        return user;
-    }
-}
-*/

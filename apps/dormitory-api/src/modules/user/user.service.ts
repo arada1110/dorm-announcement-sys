@@ -12,7 +12,7 @@ export class UserService {
     ) {}
 
     async createUserByAdmin(dto: CreateUserDto) {
-        const { email, username, first_name, last_name, password } = dto;
+        const { username, first_name, last_name, email, password } = dto;
 
         const existingUser = await this.userRepo.findUserByEmail(email);
         if (existingUser) {
@@ -54,5 +54,9 @@ export class UserService {
 
     async updateStatus(userId: string, status: string) {
         await this.userRepo.updateStatus(userId, status);
+    }
+
+    async deleteUser(userId: string) {
+        await this.userRepo.deleteUser(userId);
     }
 }

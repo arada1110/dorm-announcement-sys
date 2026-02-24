@@ -1,5 +1,5 @@
 export interface IInvite {
-    invite_id: number;
+    id: number;
     public_id: string;
     code: string;
     dormitory_id: number;

@@ -37,7 +37,7 @@ export class UserRepository implements IUserRepository {
     }
 
     async deleteUser(id: string): Promise<void> {
-        await db(this.tableName).where(id).delete();
+        await db(this.tableName).where({ id }).delete();
     }
 
     async updateRole(userId: string, roleId: number) {
