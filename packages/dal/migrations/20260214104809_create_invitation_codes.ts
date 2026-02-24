@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<void> {
         table.integer("dormitory_id");
         table.integer("room_id").notNullable();
         table.boolean("is_used").defaultTo(false);
+        table.uuid("used_by_user_id").nullable();
         table.timestamp("expired_at");
         table.timestamp("created_at").defaultTo(knex.fn.now());
     });
