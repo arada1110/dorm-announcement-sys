@@ -6,6 +6,9 @@ import { AuthModule } from "./modules/authorization/auth.module";
 import { UserModule } from "./modules/user/user.module";
 import { InviteCodeModule } from "./modules/invite/invite.module";
 import { RegistrationModule } from "./modules/register/register.module";
+import { AnnouncementModule } from "./modules/announcement/announcement.module";
+import { APP_GUARD } from "@nestjs/core";
+import { JwtAuthGuard } from "./modules/authorization/guards/jwtAuth.guard";
 
 @Module({
     imports: [
@@ -16,8 +19,15 @@ import { RegistrationModule } from "./modules/register/register.module";
         UserModule,
         InviteCodeModule,
         RegistrationModule,
+        AnnouncementModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: APP_GUARD,
+            useClass: JwtAuthGuard,
+        },
+    ],
 })
 export class AppModule {}
