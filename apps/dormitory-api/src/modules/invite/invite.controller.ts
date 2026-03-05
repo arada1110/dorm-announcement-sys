@@ -11,8 +11,8 @@ export class InviteController {
     constructor(private readonly inviteService: InviteService) {}
 
     @Post()
-    create(@Body() body: { room_id: number; expired_at?: Date }) {
-        return this.inviteService.createInvite(body.room_id, body.expired_at);
+    create(@Body() body: { roomNumber: string; expired_at?: Date }) {
+        return this.inviteService.createInvite(body.roomNumber, body.expired_at);
     }
 
     @Get()

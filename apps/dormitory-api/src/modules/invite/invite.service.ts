@@ -1,19 +1,26 @@
-import { Injectable, BadRequestException } from "@nestjs/common";
+import { Injectable, BadRequestException, NotFoundException } from "@nestjs/common";
 import { randomBytes } from "crypto";
 import { InviteCodeRepository } from "src/data/sql/repositories/Invite.repository";
 import { v4 as uuidv4 } from "uuid";
+import { RoomService } from "../room/room.service";
 
 @Injectable()
 export class InviteService {
-    private inviteRepo = new InviteCodeRepository();
+    constructor(
+        private readonly inviteRepo: InviteCodeRepository,
+        private readonly roomServ: RoomService,
+    ) {}
 
-    async createInvite(room_id: number, expired_at?: Date) {
+    async createInvite(roomNumber: string, expired_at?: Date) {
+        const room = await this.roomServ.findRoom(roomNumber);
+        if (!room) throw new NotFoundException("Room number not found");
+
         const code = randomBytes(4).toString("hex").toUpperCase();
-
         const invite = await this.inviteRepo.createInviteCode({
             public_id: uuidv4(),
             code,
-            room_id,
+            dormitory_id: room.dormitory_id,
+            room_id: room.id,
             is_used: false,
             expired_at: expired_at ?? null,
             created_at: new Date(),

@@ -9,6 +9,7 @@ import { RegistrationModule } from "./modules/register/register.module";
 import { AnnouncementModule } from "./modules/announcement/announcement.module";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtAuthGuard } from "./modules/authorization/guards/jwtAuth.guard";
+import { RoomModule } from "./modules/room/room.module";
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import { JwtAuthGuard } from "./modules/authorization/guards/jwtAuth.guard";
         InviteCodeModule,
         RegistrationModule,
         AnnouncementModule,
+        RoomModule,
     ],
     controllers: [AppController],
     providers: [
