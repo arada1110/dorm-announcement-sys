@@ -1,0 +1,25 @@
+import { Knex } from "knex";
+
+export async function seed(knex: Knex): Promise<void> {
+    await knex("rooms").delete();
+    await knex("rooms").insert([
+        { id: 1, room_number: "201", dormitory_id: 1 },
+        { id: 2, room_number: "202", dormitory_id: 1 },
+        { id: 3, room_number: "203", dormitory_id: 1 },
+        { id: 4, room_number: "204", dormitory_id: 1 },
+        { id: 5, room_number: "205", dormitory_id: 1 },
+        { id: 6, room_number: "206", dormitory_id: 1 },
+        { id: 7, room_number: "301", dormitory_id: 1 },
+        { id: 8, room_number: "302", dormitory_id: 1 },
+        { id: 9, room_number: "303", dormitory_id: 1 },
+        { id: 10, room_number: "304", dormitory_id: 1 },
+        { id: 11, room_number: "305", dormitory_id: 1 },
+        { id: 12, room_number: "306", dormitory_id: 1 },
+        { id: 13, room_number: "401", dormitory_id: 1 },
+        { id: 14, room_number: "402", dormitory_id: 1 },
+        { id: 15, room_number: "403", dormitory_id: 1 },
+        { id: 16, room_number: "404", dormitory_id: 1 },
+        { id: 17, room_number: "405", dormitory_id: 1 },
+        { id: 18, room_number: "406", dormitory_id: 1 },
+    ]);
+}
