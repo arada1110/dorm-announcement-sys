@@ -1,31 +1,72 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { RoleRepository } from "src/data/sql/repositories/Role.repository";
-import { UserRepository } from "src/data/sql/repositories/User.repository";
-import { CreateUserDto } from "./dto/createUser.dto";
+import { UserRepository } from "@/data/sql/repositories/User.repository";
+import { CreateDormAdmin, CreateUserDto } from "./dto/createUser.dto";
 import * as bcrypt from "bcrypt";
+import { RoleService } from "../role/role.service";
+import { AppUnitOfWork } from "@/data/sql/AppUnitOfWork";
+import { AdminService } from "../admin/admin.service";
 
 @Injectable()
 export class UserService {
     constructor(
-        private userRepo: UserRepository,
-        private roleRepo: RoleRepository,
+        private readonly userRepo: UserRepository,
+        private readonly roleService: RoleService,
+        private readonly adminService: AdminService,
+        private readonly uow: AppUnitOfWork,
     ) {}
 
-    async createUserByAdmin(dto: CreateUserDto) {
-        const { username, first_name, last_name, email, password } = dto;
+    async createUserByAdmin(dto: CreateUserDto, dormitoryId?: number) {
+        return this.uow.execute(async () => {
+            try {
+                const { username, first_name, last_name, email, password, role_name } = dto;
+                const existingUser = await this.userRepo.findUserByEmail(email);
+                if (existingUser) {
+                    throw new BadRequestException("Email already exists");
+                }
 
+                const role = await this.roleService.findByName(role_name);
+                if (!role) {
+                    throw new BadRequestException(role_name + " role not found");
+                }
+
+                const password_hash = await bcrypt.hash(password, 10);
+
+                const user = await this.userRepo.createUser({
+                    username,
+                    email,
+                    first_name,
+                    last_name,
+                    password_hash,
+                    role_id: role.id,
+                    status: "ACTIVE",
+                    created_at: new Date(),
+                });
+
+                if (role.name === "ADMIN" && dormitoryId) {
+                    await this.adminService.assignAdmin({ userId: user.id, dormitoryId });
+                }
+                const { password_hash: _, ...safeUser } = user;
+
+                return safeUser;
+            } catch (error) {
+                throw error;
+            }
+        });
+    }
+
+    async createResident(dto: CreateUserDto) {
+        const { username, first_name, last_name, email, password, role_name } = dto;
         const existingUser = await this.userRepo.findUserByEmail(email);
         if (existingUser) {
             throw new BadRequestException("Email already exists");
         }
 
-        const role = await this.roleRepo.findByName("RESIDENT");
+        const role = await this.roleService.findByName(role_name);
         if (!role) {
-            throw new Error("RESIDENT role not found");
+            throw new Error(role_name + " role not found");
         }
 
         const password_hash = await bcrypt.hash(password, 10);
-
         const createdUser = await this.userRepo.createUser({
             username,
             email,
@@ -46,7 +87,7 @@ export class UserService {
     }
 
     async updateRole(userId: string, roleName: string) {
-        const role = await this.roleRepo.findByName(roleName);
+        const role = await this.roleService.findByName(roleName);
         if (!role) throw new BadRequestException("Role not found");
 
         await this.userRepo.updateRole(userId, role.id);
@@ -58,5 +99,17 @@ export class UserService {
 
     async deleteUser(userId: string) {
         await this.userRepo.deleteUser(userId);
+    }
+
+    async findUserByEmail(email: string) {
+        return this.userRepo.findUserByEmail(email);
+    }
+
+    async findUserById(id: string) {
+        return this.userRepo.findUserById(id);
+    }
+
+    async findUserByEmailWithRole(email: string) {
+        return this.userRepo.findUserByEmailWithRole(email);
     }
 }
