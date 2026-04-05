@@ -1,19 +1,27 @@
-import { IAnnouncementTarget } from "src/data/abstactions/entities/IAnnouncement";
-import { IAnnouncementTargetRepository } from "src/data/abstactions/repositories/IAnnouncementTarget.repository";
-import { db } from "src/database/Connection";
+import { IAnnouncementTarget } from "@/data/abstactions/entities/IAnnouncement";
+import { IAnnouncementTargetRepository } from "@/data/abstactions/repositories/IAnnouncementTarget.repository";
+import { DatabaseRepository } from "../Database.repository";
+import { AppUnitOfWork } from "../AppUnitOfWork";
+import { Injectable } from "@nestjs/common";
 
-export class AnnouncementTargetRepository implements IAnnouncementTargetRepository {
+@Injectable()
+export class AnnouncementTargetRepository extends DatabaseRepository implements IAnnouncementTargetRepository {
     protected tableName: string = "announcement_targets";
 
-    async createTargets(announcementId: number, targets: Partial<IAnnouncementTarget>): Promise<void> {
-        await db(this.tableName).insert({ announcementId, targets });
+    constructor(protected readonly uow: AppUnitOfWork) {
+        super(uow);
+    }
+
+    async createTargets(entities: Partial<IAnnouncementTarget>): Promise<IAnnouncementTarget> {
+        const [id] = await this.query()(this.tableName).insert(entities);
+        return this.query()(this.tableName).where({ id }).first();
     }
 
     async findTargetsByAnnouncementId(announcementId: number): Promise<IAnnouncementTarget[]> {
-        return await db(this.tableName).where({ announcement_id: announcementId });
+        return await this.query()(this.tableName).where({ announcement_id: announcementId });
     }
 
     async deleteByAnnouncementId(announcementId: number): Promise<void> {
-        await db(this.tableName).where({ announcement_id: announcementId }).delete();
+        await this.query()(this.tableName).where({ announcement_id: announcementId }).delete();
     }
 }
