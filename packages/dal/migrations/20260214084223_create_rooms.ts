@@ -6,6 +6,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string("room_number").notNullable();
         table.integer("dormitory_id");
         table.integer("building_id");
+        table.integer("floor").notNullable();
         table.timestamps(true, true);
     });
 }

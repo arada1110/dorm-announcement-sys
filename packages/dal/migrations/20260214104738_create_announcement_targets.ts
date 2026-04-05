@@ -5,8 +5,8 @@ export async function up(knex: Knex): Promise<void> {
         table.increments("id").primary();
         table.integer("announcement_id");
         table.enum("target_type", ["ALL", "ROOM", "USER"]).notNullable();
-        table.integer("room_id").notNullable();
-        table.uuid("user_id").notNullable();
+        table.integer("room_id").nullable();
+        table.uuid("user_id").nullable();
     });
 }
 

@@ -7,6 +7,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string("title").notNullable();
         table.text("content").notNullable();
         table.boolean("is_line_notification_enabled").defaultTo(false);
+        table.boolean("is_published").defaultTo(true);
         table.integer("dormitory_id");
         table.integer("category_id").notNullable();
         table.uuid("created_by").notNullable();
