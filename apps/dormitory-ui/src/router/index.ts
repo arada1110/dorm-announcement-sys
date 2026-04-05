@@ -18,6 +18,7 @@ import AnnouncementDetail from "../../src/views/announcements/AnnouncementDetail
 import EditAnnouncement from "../views/admin/EditAnnouncement.vue";
 import AdminLoginView from "../views/admin/AdminLoginView.vue";
 import SettingLine from "../components/setting/admin/SettingLine.vue";
+import TermsView from "../views/resident/TermsView.vue";
 
 const routes: RouteRecordRaw[] = [
     // PUBLIC HOME PAGE (หน้าแรก)
@@ -122,6 +123,12 @@ const routes: RouteRecordRaw[] = [
     },
 
     {
+        path: "/terms",
+        name: "terms",
+        component: TermsView,
+    },
+
+    {
         path: "/announcements",
         redirect: "/",
     },
@@ -136,8 +143,9 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
+    const termsAccepted = localStorage.getItem("terms_accepted");
 
-    const publicRoutes = ["/", "/login", "/admin/login"];
+    const publicRoutes = ["/", "/login", "/admin/login", "/terms"];
     const isPublicRoute = publicRoutes.includes(to.path) || to.path.startsWith("/announcements/");
 
     if (!token && !isPublicRoute) {
@@ -150,6 +158,9 @@ router.beforeEach((to, from, next) => {
     if (to.meta.role && to.meta.role !== role) {
         if (role === "ADMIN") return next("/admin/dashboard");
         if (role === "RESIDENT") return next("/resident/announcements");
+    }
+    if (token && role === "RESIDENT" && !termsAccepted && to.path !== "/terms") {
+        return next("/terms");
     }
 
     next();
