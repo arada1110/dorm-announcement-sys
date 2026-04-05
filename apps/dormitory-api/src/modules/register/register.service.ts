@@ -1,49 +1,65 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { RegisterDto } from "./dto/register.dto";
 import { InviteService } from "../invite/invite.service";
-import { UserRepository } from "src/data/sql/repositories/User.repository";
-import { RoleRepository } from "src/data/sql/repositories/Role.repository";
-import * as bcrypt from "bcrypt";
+import { UserService } from "../user/user.service";
+import { RoomResidentService } from "../roomResident/roomResident.service";
+import { CreateUserDto } from "../user/dto/createUser.dto";
+import { AppUnitOfWork } from "@/data/sql/AppUnitOfWork";
 
 @Injectable()
-export class RegisterationService {
-    private userRepo = new UserRepository();
-    private roleRepo = new RoleRepository();
-
-    constructor(private readonly inviteService: InviteService) {}
+export class RegistrationService {
+    constructor(
+        private readonly inviteService: InviteService,
+        private readonly userService: UserService,
+        private readonly roomResidentService: RoomResidentService,
+        private readonly uow: AppUnitOfWork,
+    ) {}
 
     async register(dto: RegisterDto) {
-        const { username, first_name, last_name, email, password, inviteCode } = dto;
+        return this.uow.execute(async () => {
+            try {
+                const email = dto.email;
+                const inviteCode = dto.inviteCode ?? dto.invite_code;
 
-        const existingUser = await this.userRepo.findUserByEmail(email);
+                if (!inviteCode) {
+                    throw new BadRequestException("Invite code is required");
+                }
+
+                await this.ensureEmailNotExists(email);
+                const invite = await this.inviteService.validateInvite(inviteCode);
+                const user = await this.createResidentUser(dto);
+                await this.assignUserToRoom(invite.room_id, user.id);
+                await this.inviteService.markInviteAsUsed(invite.id, user.id);
+                return user;
+            } catch (error) {
+                throw error;
+            }
+        });
+    }
+
+    private async ensureEmailNotExists(email: string) {
+        const existingUser = await this.userService.findUserByEmail(email);
+
         if (existingUser) {
             throw new BadRequestException("Email already exists");
         }
+    }
 
-        const invite = await this.inviteService.validateInvite(inviteCode);
-
-        const role = await this.roleRepo.findByName("RESIDENT");
-        if (!role) {
-            throw new Error("RESIDENT role not found");
-        }
-
-        const password_hash = await bcrypt.hash(password, 10);
-
-        const createdUser = await this.userRepo.createUser({
+    private async createResidentUser(dto: RegisterDto) {
+        const { username, first_name, last_name, email, password } = dto;
+        const userPayload: CreateUserDto = {
             username,
             email,
             first_name,
             last_name,
-            password_hash,
-            role_id: role.id,
-            status: "ACTIVE",
-            created_at: new Date(),
-        });
+            password,
+            role_name: "RESIDENT",
+        };
 
-        await this.inviteService.markInviteAsUsed(invite.id);
+        return this.userService.createResident(userPayload);
+    }
 
-        const { password_hash: _, ...safeUser } = createdUser;
-
-        return safeUser;
+    private async assignUserToRoom(roomId: number, userId: string) {
+        return this.roomResidentService.addResident(roomId, userId);
     }
 }

@@ -6,7 +6,7 @@ export async function up(knex: Knex): Promise<void> {
         table.integer("room_id");
         table.uuid("user_id").notNullable();
         table.date("start_date").notNullable();
-        table.date("end_date").notNullable();
+        table.date("end_date").nullable();
     });
 }
 

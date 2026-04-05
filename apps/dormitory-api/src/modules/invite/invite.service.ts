@@ -1,19 +1,35 @@
-import { Injectable, BadRequestException } from "@nestjs/common";
+import { Injectable, BadRequestException, NotFoundException } from "@nestjs/common";
 import { randomBytes } from "crypto";
-import { InviteCodeRepository } from "src/data/sql/repositories/Invite.repository";
+import { InviteCodeRepository } from "@/data/sql/repositories/Invite.repository";
 import { v4 as uuidv4 } from "uuid";
+import { RoomService } from "../room/room.service";
 
 @Injectable()
 export class InviteService {
-    private inviteRepo = new InviteCodeRepository();
+    constructor(
+        private readonly inviteRepo: InviteCodeRepository,
+        private readonly roomServ: RoomService,
+    ) {}
 
-    async createInvite(room_id: number, expired_at?: Date) {
+    async createInvite(roomId: number, expired_at?: Date) {
+        if (!roomId) {
+            throw new BadRequestException("Room id is required");
+        }
+
+        const room = await this.roomServ.findRoomById(roomId);
+
+        if (!room) {
+            throw new NotFoundException("Room not found");
+        }
+
+        // generate invite code
         const code = randomBytes(4).toString("hex").toUpperCase();
 
         const invite = await this.inviteRepo.createInviteCode({
             public_id: uuidv4(),
             code,
-            room_id,
+            dormitory_id: room.dormitory_id,
+            room_id: room.id,
             is_used: false,
             expired_at: expired_at ?? null,
             created_at: new Date(),
@@ -40,12 +56,18 @@ export class InviteService {
         return invite;
     }
 
-    async markInviteAsUsed(id: number) {
-        await this.inviteRepo.markAsUsed(id);
+    async markInviteAsUsed(id: number, userId: string) {
+        await this.inviteRepo.markAsUsed(id, userId);
     }
 
-    async listInvites() {
-        return this.inviteRepo.list();
+    async listInvites(dormitoryId?: number) {
+        const invites = await this.inviteRepo.list();
+
+        if (!dormitoryId) {
+            return invites;
+        }
+
+        return invites.filter((invite) => invite.dormitory_id === dormitoryId);
     }
 
     async deleteInvite(id: number) {

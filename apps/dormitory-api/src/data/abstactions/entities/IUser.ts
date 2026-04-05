@@ -12,4 +12,6 @@ export interface IUser {
 
 export interface IUserWithRole extends IUser {
     role_name: string;
+    room_id?: number | null;
+    dormitory_id?: number | null;
 }

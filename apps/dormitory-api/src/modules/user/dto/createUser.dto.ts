@@ -17,5 +17,25 @@ export class CreateUserDto {
     password: string;
 
     @IsNotEmpty()
-    role: string;
+    role_name: string;
+}
+
+export class CreateDormAdmin {
+    @IsNotEmpty()
+    username: string;
+
+    @IsNotEmpty()
+    first_name: string;
+
+    @IsNotEmpty()
+    last_name: string;
+
+    @IsEmail()
+    email: string;
+
+    @MinLength(6)
+    password: string;
+
+    @IsNotEmpty()
+    role_name: string;
 }
