@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common";
-import { JwtAuthGuard } from "src/modules/authorization/guards/jwtAuth.guard";
+import { JwtAuthGuard } from "@/modules/authorization/guards/jwtAuth.guard";
 import { AnnouncementTargetService } from "./announcementTarget.service";
-import { TargetTypes } from "src/data/abstactions/entities/IAnnouncement";
+import type { AnnouncementTargetDto } from "./dto/announcementTarget.dto";
 
 @UseGuards(JwtAuthGuard)
 @Controller("announcement/target")
@@ -9,8 +9,8 @@ export class AnnouncementTargetController {
     constructor(private readonly announcementTargetService: AnnouncementTargetService) {}
 
     @Post()
-    create(@Body() announcementId: number, target: TargetTypes, roomId?: number, userId?: string) {
-        return this.announcementTargetService.create(announcementId, target, roomId, userId);
+    create(@Body() dto: AnnouncementTargetDto) {
+        return this.announcementTargetService.create(dto);
     }
 
     @Get(":id")

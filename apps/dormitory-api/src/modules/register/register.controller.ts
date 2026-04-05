@@ -1,11 +1,11 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { RegisterDto } from "./dto/register.dto";
-import { RegisterationService } from "./register.service";
+import { RegistrationService } from "./register.service";
 import { Public } from "../authorization/decorators/public.decorator";
 
 @Controller("register")
 export class RegisterController {
-    constructor(private readonly registerService: RegisterationService) {}
+    constructor(private readonly registerService: RegistrationService) {}
 
     @Public()
     @Post()

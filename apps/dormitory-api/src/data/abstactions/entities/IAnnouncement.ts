@@ -16,10 +16,12 @@ export interface IAnnouncements {
     created_by: string;
     created_at: Date;
     updated_at: Date;
+    is_line_sent: boolean;
+    line_sent_at?: Date | null;
 }
 
 export interface IAnnouncementTarget {
-    id: number;
+    id?: number;
     announcement_id: number;
     target_type: TargetTypes;
     room_id?: number | null;
@@ -30,4 +32,12 @@ export enum TargetTypes {
     ALL = "ALL",
     ROOM = "ROOM",
     USER = "USER",
+}
+
+export interface PublicAnnouncement {
+    public_id: string;
+    title: string;
+    content: string;
+    category_name: string;
+    created_at: string;
 }

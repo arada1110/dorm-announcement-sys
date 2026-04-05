@@ -1,27 +1,35 @@
 import { Injectable } from "@nestjs/common";
-import { TargetTypes } from "src/data/abstactions/entities/IAnnouncement";
-import { AnnouncementTargetRepository } from "src/data/sql/repositories/AnnouncementTarget.repository";
+import { IAnnouncementTarget, TargetTypes } from "@/data/abstactions/entities/IAnnouncement";
+import { AnnouncementTargetRepository } from "@/data/sql/repositories/AnnouncementTarget.repository";
+import { AnnouncementTargetDto } from "./dto/announcementTarget.dto";
+import { AppUnitOfWork } from "@/data/sql/AppUnitOfWork";
 
 @Injectable()
 export class AnnouncementTargetService {
     constructor(private readonly targetRepo: AnnouncementTargetRepository) {}
 
-    async create(announcementId: number, targetType: TargetTypes, roomId?: number, userId?: string) {
-        let targets;
+    async create(dto: AnnouncementTargetDto) {
+        try {
+            const targets: IAnnouncementTarget = {
+                announcement_id: dto.announcement_id,
+                target_type: dto.tartget_type,
+                room_id: dto.room_id ?? null,
+                user_id: dto.target_user_id ?? null,
+            };
 
-        if (targetType === TargetTypes.ALL) {
-            targets = TargetTypes.ALL;
+            if (dto.tartget_type === TargetTypes.ROOM && !dto.room_id) {
+                throw new Error("room_id is required for ROOM target");
+            }
+
+            if (dto.tartget_type === TargetTypes.USER && !dto.target_user_id) {
+                throw new Error("user_id is required for USER target");
+            }
+
+            await this.targetRepo.createTargets(targets);
+        } catch (error) {
+            console.log(error);
+            throw error;
         }
-
-        if (targetType === TargetTypes.ROOM) {
-            targets = roomId;
-        }
-
-        if (targetType === TargetTypes.USER) {
-            targets = userId;
-        }
-
-        await this.targetRepo.createTargets(announcementId, targets);
     }
 
     async getByAnnouncementId(announcementId: number) {

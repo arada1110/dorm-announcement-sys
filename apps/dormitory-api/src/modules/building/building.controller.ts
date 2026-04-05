@@ -14,4 +14,9 @@ export class BuildingController {
     find(@Param("name") name: string) {
         return this.buildServ.findBuilding(name);
     }
+
+    @Get()
+    async getBuilding() {
+        return this.buildServ.getBuilding();
+    }
 }

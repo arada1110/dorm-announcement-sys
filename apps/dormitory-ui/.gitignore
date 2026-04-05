@@ -37,3 +37,8 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# transpiled artifacts from local TS/Vue build
+src/**/*.js
+src/**/*.js.map
+

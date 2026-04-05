@@ -5,6 +5,6 @@ export interface IInvite {
     dormitory_id: number;
     room_id: number;
     is_used: boolean;
-    expired_at: Date;
+    expired_at?: Date;
     created_at: Date;
 }

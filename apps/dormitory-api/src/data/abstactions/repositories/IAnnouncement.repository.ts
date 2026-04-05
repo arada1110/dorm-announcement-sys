@@ -1,4 +1,4 @@
-import { IAnnouncements } from "../entities/IAnnouncement";
+import { IAnnouncements, PublicAnnouncement } from "../entities/IAnnouncement";
 
 export interface IAnnouncementRepository {
     list(): Promise<IAnnouncements[]>;
@@ -14,4 +14,8 @@ export interface IAnnouncementRepository {
             offset?: number;
         },
     ): Promise<IAnnouncements[]>;
+    findForResident(userId: string, roomId?: number): Promise<any>;
+    findPublicAnnouncements(): Promise<PublicAnnouncement[]>;
+    publish(publicId: string): Promise<IAnnouncements>;
+    unPublish(publicId: string): Promise<IAnnouncements>;
 }

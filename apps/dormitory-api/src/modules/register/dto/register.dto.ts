@@ -17,5 +17,7 @@ export class RegisterDto {
     password: string;
 
     @IsNotEmpty()
-    inviteCode: string;
+    inviteCode?: string;
+
+    invite_code?: string;
 }

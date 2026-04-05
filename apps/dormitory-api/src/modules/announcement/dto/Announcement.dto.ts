@@ -1,32 +1,36 @@
 import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from "class-validator";
-import { TargetTypes } from "src/data/abstactions/entities/IAnnouncement";
+import { TargetTypes } from "@/data/abstactions/entities/IAnnouncement";
 
 export class CreateAnnouncementDto {
     @IsString()
     @IsNotEmpty()
-    title: string;
+    title!: string;
 
     @IsString()
     @IsNotEmpty()
-    content: string;
+    content!: string;
 
     @IsString()
-    categoryName: string;
+    categoryName!: string;
 
     @IsOptional()
     @IsBoolean()
     isLineNotificationEnabled?: boolean;
 
     @IsEnum(TargetTypes)
-    targetType?: TargetTypes;
+    targetType!: TargetTypes;
 
     @ValidateIf((o) => o.targetType === TargetTypes.ROOM)
     @IsNumber()
     roomId?: number;
 
     @ValidateIf((o) => o.targetType === TargetTypes.USER)
-    @IsNumber()
-    userId?: number;
+    @IsString()
+    targetUserId?: string;
+
+    @IsString()
+    @IsNotEmpty()
+    creatorId!: string;
 }
 
 export class UpdateAnnouncementDto {
@@ -55,6 +59,6 @@ export class UpdateAnnouncementDto {
     roomId?: number | null;
 
     @IsOptional()
-    @IsNumber()
-    userId?: number | null;
+    @IsString()
+    userId?: string | null;
 }
