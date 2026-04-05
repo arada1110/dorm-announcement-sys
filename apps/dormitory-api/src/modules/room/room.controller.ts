@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { Roles } from "../authorization/decorators/roles.decorator";
 import { JwtAuthGuard } from "../authorization/guards/jwtAuth.guard";
 import { RolesGuard } from "../authorization/guards/roles.guard";
@@ -12,13 +12,18 @@ export class RoomController {
     constructor(private readonly roomService: RoomService) {}
 
     @Get()
-    list() {
-        return this.roomService.listRoom();
+    list(@Query("name") name: string, @Query("floor") floor?: string) {
+        const parsedFloor = floor ? Number(floor) : undefined;
+
+        if (name) {
+            return this.roomService.findRoomByBuilding(name, parsedFloor);
+        }
+        return this.roomService.listRoom(parsedFloor);
     }
 
-    @Get(":roomNumber")
-    find(@Param("roomNumber") roomNumber: string) {
-        return this.roomService.findRoom(roomNumber);
+    @Get(":id")
+    find(@Param("id") roomId: number) {
+        return this.roomService.findRoomById(roomId);
     }
 
     @Post()

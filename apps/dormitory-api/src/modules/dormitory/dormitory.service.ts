@@ -1,4 +1,4 @@
-import { DormitoryRepository } from "src/data/sql/repositories/Dormitory.repostory";
+import { DormitoryRepository } from "@/data/sql/repositories/Dormitory.repostory";
 
 export class DormitoryService {
     constructor(private readonly dormRepo: DormitoryRepository) {}

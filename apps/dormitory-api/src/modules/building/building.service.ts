@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { BuildingRepository } from "src/data/sql/repositories/Building.repository";
+import { BuildingRepository } from "@/data/sql/repositories/Building.repository";
 
 @Injectable()
 export class BuildingService {
@@ -7,5 +7,9 @@ export class BuildingService {
 
     async findBuilding(name?: string) {
         return this.buildRepo.findBuildingByName(name);
+    }
+
+    async getBuilding() {
+        return this.buildRepo.listBuilding();
     }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { IRoom } from "src/data/abstactions/entities/IRoom";
-import { RoomRepository } from "src/data/sql/repositories/Room.repository";
+import { IRoom } from "@/data/abstactions/entities/IRoom";
+import { RoomRepository } from "@/data/sql/repositories/Room.repository";
 import { CreateRoom } from "./dto/room.dto";
 import { DormitoryService } from "../dormitory/dormitory.service";
 import { BuildingService } from "../building/building.service";
@@ -13,8 +13,14 @@ export class RoomService {
         private buildServ: BuildingService,
     ) {}
 
-    async listRoom() {
-        return this.roomRepo.listRoom();
+    async listRoom(floor?: number) {
+        const rooms = await this.roomRepo.listRoom();
+
+        if (typeof floor !== "number" || Number.isNaN(floor)) {
+            return rooms;
+        }
+
+        return rooms.filter((room) => room.floor === floor);
     }
 
     async findRoom(roomNumber: string) {
@@ -28,6 +34,7 @@ export class RoomService {
             room_number: entities.roomNumber,
             dormitory_id: dorm.id,
             building_id: building.id,
+            floor: entities.floor,
         };
 
         return await this.roomRepo.createRoom(room);
@@ -35,5 +42,13 @@ export class RoomService {
 
     async deleteRoom(id: number) {
         await this.roomRepo.deleteRoom(id);
+    }
+
+    async findRoomByBuilding(buildingName: string, floor?: number) {
+        return await this.roomRepo.findByBuilding(buildingName, floor);
+    }
+
+    async findRoomById(roomId: number) {
+        return this.roomRepo.findRoomById(roomId);
     }
 }
