@@ -1,24 +1,31 @@
-import { IRole } from "src/data/abstactions/entities/IRole";
-import { IRoleRepository } from "src/data/abstactions/repositories/IRole.repository";
-import { db } from "src/database/Connection";
+import { IRole } from "@/data/abstactions/entities/IRole";
+import { IRoleRepository } from "@/data/abstactions/repositories/IRole.repository";
+import { DatabaseRepository } from "../Database.repository";
+import { AppUnitOfWork } from "../AppUnitOfWork";
+import { Injectable } from "@nestjs/common";
 
-export class RoleRepository implements IRoleRepository {
+@Injectable()
+export class RoleRepository extends DatabaseRepository implements IRoleRepository {
     protected tablaName: string = "roles";
 
+    constructor(protected readonly uow: AppUnitOfWork) {
+        super(uow);
+    }
+
     async list(): Promise<IRole[]> {
-        return db(this.tablaName).select("*");
+        return this.query()(this.tablaName).select("*");
     }
 
     async findByName(name: string): Promise<{ id: number; name: string }> {
-        return db(this.tablaName).where({ role_name: name }).first();
+        return this.query()(this.tablaName).where({ role_name: name }).first();
     }
 
     async createRole(entity: Partial<IRole>): Promise<IRole> {
-        const [id] = await db(this.tablaName).insert(entity);
-        return db(this.tablaName).where(id).first();
+        const [id] = await this.query()(this.tablaName).insert(entity);
+        return this.query()(this.tablaName).where(id).first();
     }
 
     async deleteRole(id: number): Promise<void> {
-        await db(this.tablaName).where(id).delete();
+        await this.query()(this.tablaName).where(id).delete();
     }
 }
