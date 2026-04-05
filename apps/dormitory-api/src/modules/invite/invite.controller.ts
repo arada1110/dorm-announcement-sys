@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
 import { InviteService } from "./invite.service";
 import { JwtAuthGuard } from "../authorization/guards/jwtAuth.guard";
 import { RolesGuard } from "../authorization/guards/roles.guard";
@@ -11,13 +11,13 @@ export class InviteController {
     constructor(private readonly inviteService: InviteService) {}
 
     @Post()
-    create(@Body() body: { roomNumber: string; expired_at?: Date }) {
-        return this.inviteService.createInvite(body.roomNumber, body.expired_at);
+    create(@Body("room_id") roomId: number) {
+        return this.inviteService.createInvite(roomId);
     }
 
     @Get()
-    list() {
-        return this.inviteService.listInvites();
+    list(@Req() req) {
+        return this.inviteService.listInvites(req.user.dormitoryId);
     }
 
     @Delete(":id")

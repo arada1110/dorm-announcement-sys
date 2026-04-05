@@ -5,6 +5,6 @@ export interface IInviteCodeRepository {
     findById(id: number): Promise<IInvite>;
     findByCode(code: string): Promise<IInvite>;
     createInviteCode(data: IInvite): Promise<IInvite>;
-    markAsUsed(id: number): Promise<void>;
+    markAsUsed(invitrId: number, userId: string): Promise<void>;
     deleteInviteCode(id: number): Promise<void>;
 }
