@@ -13,6 +13,10 @@ export class LineWebhookController {
         @Headers("x-line-signature") signature: string,
         @Query("dormitoryId") dormitoryId: string,
     ) {
-        return this.lineWebhookService.handleEvent(body, signature, parseInt(dormitoryId));
+        this.lineWebhookService
+            .handleEvent(body, signature, parseInt(dormitoryId))
+            .catch((err) => console.error("Webhook error:", err));
+
+        return { status: "ok" };
     }
 }
