@@ -47,8 +47,8 @@
                         :value="formData?.categoryName || 'GENERAL'"
                         @change="handleTextInput($event, 'categoryName')"
                     >
-                        <option value="GENERAL">ข่าวทั้งหมด</option>
-                        <option value="ANNOUNCEMENT">ANNOUNCEMENT</option>
+                        <option value="GENERAL">ข่าวทั่วไป</option>
+                        <option value="ANNOUNCEMENT">ประกาศสำคัญ</option>
                         <option value="EVENT">กิจกรรม</option>
                         <option value="PAYMENT">การชำระเงิน</option>
                         <option value="MAINTENANCE">การซ่อมบำรุง</option>
