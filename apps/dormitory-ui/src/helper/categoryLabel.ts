@@ -11,8 +11,8 @@ export function categoryLabel(id: number) {
 
 export const categoryLabelMap: Record<string, string> = {
     GENERAL: "ข่าวทั้งหมด",
-    ROOM: "ข่าวเฉพาะห้อง",
-    BUILDING: "ข่าวเฉพาะอาคาร",
+    ANNOUNCEMENT: "ประกาศสำคัญ",
+    EVENT: "กิจกรรม",
     PAYMENT: "การชำระเงิน",
     MAINTENANCE: "การซ่อมบำรุง",
 };

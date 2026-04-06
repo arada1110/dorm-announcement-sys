@@ -2,7 +2,7 @@
 import { ArrowRight, CalendarDays } from "lucide-vue-next";
 import { computed } from "vue";
 
-type CategoryName = "GENERAL" | "ROOM" | "BUILDING" | "PAYMENT" | "MAINTENANCE";
+type CategoryName = "GENERAL" | "ANNOUNCEMENT" | "EVENT" | "PAYMENT" | "MAINTENANCE";
 
 const props = defineProps<{
     title: string;
@@ -25,11 +25,11 @@ const categoryMeta = computed(() => {
             label: "ข่าวทั่วไป",
             className: "bg-sky-100 text-sky-700",
         },
-        ROOM: {
+        ANNOUNCEMENT: {
             label: "ข่าวเฉพาะห้อง",
             className: "bg-violet-100 text-violet-700",
         },
-        BUILDING: {
+        EVENT: {
             label: "ข่าวเฉพาะอาคาร",
             className: "bg-green-100 text-green-700",
         },

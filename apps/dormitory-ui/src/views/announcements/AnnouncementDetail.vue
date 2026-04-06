@@ -75,7 +75,7 @@ import { useRoute } from "vue-router";
 import { getAnnouncementById } from "../../api/announcements.api";
 import { useAuthStore } from "../../stores/authStore";
 
-type CategoryName = "GENERAL" | "ROOM" | "BUILDING" | "PAYMENT" | "MAINTENANCE";
+type CategoryName = "GENERAL" | "ANNOUNCEMENT" | "EVENT" | "PAYMENT" | "MAINTENANCE";
 
 interface AnnouncementDetail {
     title: string;
@@ -98,13 +98,13 @@ const categoryMeta = computed(() => {
             label: "ข่าวทั่วไป",
             className: "category-general",
         },
-        ROOM: {
-            label: "ข่าวเฉพาะห้อง",
-            className: "category-room",
+        ANNOUNCEMENT: {
+            label: "ประกาศสำคัญ",
+            className: "category-annc",
         },
-        BUILDING: {
-            label: "ข่าวเฉพาะอาคาร",
-            className: "category-building",
+        EVENT: {
+            label: "กิจกรรม",
+            className: "category-event",
         },
         PAYMENT: {
             label: "การชำระเงิน",
@@ -244,12 +244,12 @@ onMounted(async () => {
     color: #0369a1;
 }
 
-.category-room {
+.category-annc {
     background: #ede9fe;
     color: #6d28d9;
 }
 
-.category-building {
+.category-event {
     background: #dcfce7;
     color: #15803d;
 }

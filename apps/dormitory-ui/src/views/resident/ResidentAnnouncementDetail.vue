@@ -61,7 +61,7 @@ import { useRoute, useRouter } from "vue-router";
 import { getAnnouncementById } from "../../api/announcements.api";
 
 type TargetType = "ALL" | "ROOM" | "USER";
-type CategoryName = "GENERAL" | "ROOM" | "BUILDING" | "PAYMENT" | "MAINTENANCE";
+type CategoryName = "GENERAL" | "ANNOUNCEMENT" | "EVENT" | "PAYMENT" | "MAINTENANCE";
 
 interface AnnouncementDetail {
     public_id: string;
@@ -81,8 +81,8 @@ const categoryMeta = computed(() => {
     const category = announcement.value?.category_name ?? "GENERAL";
     const map = {
         GENERAL: { label: "ข่าวทั่วไป", className: "category-general" },
-        ROOM: { label: "ข่าวเฉพาะห้อง", className: "category-room" },
-        BUILDING: { label: "ข่าวเฉพาะอาคาร", className: "category-building" },
+        ANNOUNCEMENT: { label: "ประกาศสำคัญ", className: "category-annc" },
+        EVENT: { label: "EVENT", className: "category-event" },
         PAYMENT: { label: "การชำระเงิน", className: "category-payment" },
         MAINTENANCE: { label: "การซ่อมบำรุง", className: "category-maintenance" },
     } satisfies Record<CategoryName, { label: string; className: string }>;
@@ -221,12 +221,12 @@ function isNew(createdAt?: string) {
     color: #0369a1;
 }
 
-.category-room {
+.category-annc {
     background: #ede9fe;
     color: #6d28d9;
 }
 
-.category-building {
+.category-event {
     background: #dcfce7;
     color: #15803d;
 }

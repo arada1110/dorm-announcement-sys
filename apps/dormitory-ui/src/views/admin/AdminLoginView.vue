@@ -80,7 +80,6 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { House, ShieldCheck, ShieldAlert, ChevronLeft } from "lucide-vue-next";
 import { login } from "../../api/authApi";
-import type { IUser } from "../../models/userModel";
 import { useAuthStore } from "../../stores/authStore";
 
 const router = useRouter();
@@ -97,7 +96,7 @@ const handleLogin = async () => {
         error.value = "";
         const res = await login({ email: email.value, password: password.value });
         const token = res.data.access_token;
-        const user: IUser = res.data.user;
+        const user = res.data.user;
         authStore.setToken(token);
 
         if (user.role_name === "ADMIN") {
