@@ -48,8 +48,8 @@
                         @change="handleTextInput($event, 'categoryName')"
                     >
                         <option value="GENERAL">ข่าวทั้งหมด</option>
-                        <option value="ROOM">ข่าวเฉพาะห้อง</option>
-                        <option value="BUILDING">ข่าวเฉพาะอาคาร</option>
+                        <option value="ANNOUNCEMENT">ANNOUNCEMENT</option>
+                        <option value="EVENT">กิจกรรม</option>
                         <option value="PAYMENT">การชำระเงิน</option>
                         <option value="MAINTENANCE">การซ่อมบำรุง</option>
                     </select>

@@ -118,8 +118,8 @@ const confirmCreate = async () => {
 };
 
 const getCategoryBadgeClass = (categoryName?: string) => {
-    if (categoryName === "ROOM") return "badge-room";
-    if (categoryName === "BUILDING") return "badge-building";
+    if (categoryName === "ANNOUNCEMENT") return "badge-announcement";
+    if (categoryName === "EVENT") return "badge-event";
     if (categoryName === "PAYMENT") return "badge-payment";
     if (categoryName === "MAINTENANCE") return "badge-maintenance";
 
@@ -400,12 +400,12 @@ onMounted(async () => {
     color: #4f46e5;
 }
 
-.badge-room {
+.badge-announcement {
     background: #dbeafe;
     color: #1d4ed8;
 }
 
-.badge-building {
+.badge-event {
     background: #ede9fe;
     color: #6d28d9;
 }
