@@ -2,7 +2,8 @@
     "compilerOptions": {
         "noEmit": true,
         "skipLibCheck": true,
-        "strict": true
+        "strict": true,
+        "types": ["vite/client"]
     },
     "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts"]
 }

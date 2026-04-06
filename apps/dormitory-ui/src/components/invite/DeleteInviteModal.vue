@@ -2,7 +2,7 @@
 const props = defineProps<{
     invite?: {
         code?: string;
-        room_number?: string | number;
+        room_number?: string | number | null;
     } | null;
 }>();
 
@@ -17,9 +17,7 @@ const emit = defineEmits(["confirm", "cancel"]);
             </div>
 
             <div class="modal-body">
-                <p class="message">
-                    คุณต้องการลบรหัสเชิญนี้ใช่หรือไม่
-                </p>
+                <p class="message">คุณต้องการลบรหัสเชิญนี้ใช่หรือไม่</p>
 
                 <div class="preview-box">
                     <div class="preview-row">
@@ -31,21 +29,15 @@ const emit = defineEmits(["confirm", "cancel"]);
 
                     <div class="preview-row">
                         <span class="preview-label">ห้อง</span>
-                        <span class="preview-value">
-                            ห้อง {{ props.invite?.room_number || "-" }}
-                        </span>
+                        <span class="preview-value"> ห้อง {{ props.invite?.room_number || "-" }} </span>
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button class="btn-cancel" @click="emit('cancel')">
-                    ยกเลิก
-                </button>
+                <button class="btn-cancel" @click="emit('cancel')">ยกเลิก</button>
 
-                <button class="btn-delete" @click="emit('confirm')">
-                    ลบรหัสเชิญ
-                </button>
+                <button class="btn-delete" @click="emit('confirm')">ลบรหัสเชิญ</button>
             </div>
         </div>
     </div>
