@@ -10,7 +10,7 @@ export function categoryLabel(id: number) {
 }
 
 export const categoryLabelMap: Record<string, string> = {
-    GENERAL: "ข่าวทั้งหมด",
+    GENERAL: "ข่าวทั่วไป",
     ANNOUNCEMENT: "ประกาศสำคัญ",
     EVENT: "กิจกรรม",
     PAYMENT: "การชำระเงิน",
