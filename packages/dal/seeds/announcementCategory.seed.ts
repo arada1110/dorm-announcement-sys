@@ -9,13 +9,13 @@ export async function seed(knex: Knex): Promise<void> {
             is_active: true,
         },
         {
-            category_name: "ROOM",
-            description: "ข่าวเฉพาะห้อง",
+            category_name: "ANNOUNCEMENT",
+            description: "ประกาศสำคัญ",
             is_active: true,
         },
         {
-            category_name: "BUILDING",
-            description: "ข่าวเฉพาะอาคาร",
+            category_name: "EVENT",
+            description: "กิจกรรม",
             is_active: true,
         },
         {

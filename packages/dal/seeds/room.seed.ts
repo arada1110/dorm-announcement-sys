@@ -21,5 +21,11 @@ export async function seed(knex: Knex): Promise<void> {
         { id: 16, room_number: "404", dormitory_id: 1, building_id: 1, floor: 4 },
         { id: 17, room_number: "405", dormitory_id: 1, building_id: 1, floor: 4 },
         { id: 18, room_number: "406", dormitory_id: 1, building_id: 1, floor: 4 },
+        { id: 19, room_number: "501", dormitory_id: 1, building_id: 1, floor: 5 },
+        { id: 20, room_number: "502", dormitory_id: 1, building_id: 1, floor: 5 },
+        { id: 21, room_number: "503", dormitory_id: 1, building_id: 1, floor: 5 },
+        { id: 22, room_number: "504", dormitory_id: 1, building_id: 1, floor: 5 },
+        { id: 23, room_number: "505", dormitory_id: 1, building_id: 1, floor: 5 },
+        { id: 24, room_number: "506", dormitory_id: 1, building_id: 1, floor: 5 },
     ]);
 }

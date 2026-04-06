@@ -51,8 +51,8 @@
                             @change="handleTextInput($event, 'categoryName')"
                         >
                             <option value="GENERAL">ข่าวทั้งหมด</option>
-                            <option value="ROOM">ข่าวเฉพาะห้อง</option>
-                            <option value="BUILDING">ข่าวเฉพาะอาคาร</option>
+                            <option value="ANNOUNCEMENT">ประกาศสำคัญ</option>
+                            <option value="EVENT">กิจกรรม</option>
                             <option value="PAYMENT">การชำระเงิน</option>
                             <option value="MAINTENANCE">การซ่อมบำรุง</option>
                         </select>
@@ -216,7 +216,7 @@ const mapAnnouncementToForm = (announcement: any): AnnouncementFormData => {
     return {
         title: announcement?.title || "",
         content: announcement?.content || "",
-        categoryName: ["GENERAL", "ROOM", "BUILDING", "PAYMENT", "MAINTENANCE"].includes(categoryName)
+        categoryName: ["GENERAL", "ANNOUNCEMENT", "EVENT", "PAYMENT", "MAINTENANCE"].includes(categoryName)
             ? categoryName
             : "GENERAL",
         targetType: targetType === "ROOM" ? "ROOM" : "ALL",
