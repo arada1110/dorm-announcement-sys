@@ -26,7 +26,7 @@ export const deleteAnnouncement = (id: string) => {
 };
 
 const PUBLICAPI = axios.create({
-    baseURL: "http://localhost:8888",
+    baseURL: import.meta.env.VITE_API_URL || "",
 });
 
 export const getPublicAnnouncements = () => {
