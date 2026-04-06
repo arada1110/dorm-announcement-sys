@@ -2,7 +2,7 @@ import axios from "axios";
 import API from "./axios";
 
 const AUTHAPI = axios.create({
-    baseURL: "http://localhost:8888",
+    baseURL: import.meta.env.VITE_API_URL || "",
 });
 
 export const login = (data: { email: string; password: string }) => {
